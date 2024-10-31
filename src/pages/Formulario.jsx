@@ -1,69 +1,123 @@
-const Formulario = () => {
+import React, {useState} from 'react';
+import styles from '../assets/css/formulario.module.css'
+import axios from 'axios'
+import { Link } from 'react-router-dom';
+function Formulario() {
+    {/* Primeiro passo: */}
+    {/* Pegar todos os valores dos campos, pode ser input ou textarea */}
+    const [nome, setNome] = useState('')
+    const [codCid, setCodCid] = useState('')
+    const [obsLaudo, setObsLaudo] = useState('')
+    const [dataLaudo, setDataLaudo] = useState('')
 
-    const handleClick = () => {
-        // Aqui você pode implementar a lógica do botão
-        const nome = document.getElementById('nome').value;
-        const email = document.getElementById('email').value;
-        const telefone = document.getElementById('telefone').value;
-        const cep = document.getElementById('cep').value;
-        const numero = document.getElementById('numero').value;
-        const complemento = document.getElementById('complemento').value;
-        
-        // Exemplo de saída
-        const output = `Nome: ${nome}, E-mail: ${email}, Telefone: ${telefone}, CEP: ${cep}, Número: ${numero}, Complemento: ${complemento}`;
-        document.getElementById('saida-de-dados').innerText = output;
-    };
+    {/* Segundo passo: */} 
+    {/* Criar uma função para cada campo */}
+
+    {/* Esse é para o nome, faça o mesmo com todos */}
+    const handleInputNome = (event) => {
+        setNome(event.target.value)
+    }
+
+    const handleInputCod = (event) => {
+        setCodCid(event.target.value)
+    }
+    const handleInputObs = (event) => {
+        setObsLaudo(event.target.value)
+    }
+    const handleInputData = (event) => {
+        setDataLaudo(event.target.value)
+    }
+
+    {/* Terceiro passo: */}
+    {/* Adicionar o value e o onChange nos campos */}
+    {/* Exemplo: */}
+    {/* <input type="text" value={nome} onChange={handleInputNome} /> */}
+    {/* <input type="text" value={rmAluno} onChange={handleInputRm} /> */}
+
+    {/* Retomando: no 'const [nome, setNome]', criamos duas variaveis,
+        uma será para o valor, a outra para definir o valor.
+        Usamos a função para definir esse valor e o value para mudar 
+        o campo. */}
+
+    {/* Quarto passo: */}
+    {/* Criar Objeto que irá salvar todos os dados */}
+    const laudo = {
+        id: 1, // esse id é só para teste, ele será gerado automaticamente, então depois remova-o
+        nome_laudo: nome,
+        cod_cid: codCid,
+        obs_laudo: obsLaudo,
+        data_laudo: dataLaudo,
+    }
+    
+    {/* Quinto passo: */}
+    {/* Criar uma função para salvar os dados */}
+    const salvarLaudo = async(event) => {
+     event.preventDefault()
+     console.log(laudo)
+     try {
+        const response = await axios.post('http://localhost:8080/laudo', laudo) // aqui é a rota que irá salvar
+        console.log(response)
+    }
+    catch (error) {
+        console.error(error)
+    }
+
+}
+
+    
 
     return (
-        <div className="container-fluid">
-            <h1>Projeto Inicial</h1>
-            <div>
-                <h4>Aula de DSA2</h4>
-                <form>
-                    <div className="mb-1">
-                        <label htmlFor="nome">Digite seu nome:</label>
-                        <input type="text" id="nome" name="nome" placeholder="Digite seu nome..." />
+        // isso aqui se chama ccs.module, é um css que só funciona nesse arquivo
+        // ele é importado no import styles from '../assets/css/formulario.module.css'
+        // e é chamado no className={styles.laudoContainer}
+        <div className={`container-fluid ${styles.laudoContainer}`}>
+            <h4>Cadastro de Laudo</h4>
+            <Link to='/'>Voltar</Link>
+            <form>
+                <div className="laudoContent form-group mt-4">
+                    <div className={styles.gridItens}>
+                        {/* Aqui é o primeiro campo, ele altera a variavel 'nome' e irá salvar nosso nome */}
+                        <div className="item1">
+                            <label htmlFor="nome">Nome:</label>
+                            <input
+                            type="text"
+                            className="form-control"
+                            id="nome" 
+                            placeholder="Nome do Laudo"
+                            value={nome}
+                            onChange={handleInputNome} />
+                        </div>
+                        <div className="item2">
+                            <label htmlFor="codigoCID">Código CID:</label>
+                            <input 
+                            id="codigoCID"
+                            className="form-control"
+                            placeholder="Código CID"
+                            value={codCid}
+                            onChange={handleInputCod}/>
+                        </div>
                     </div>
-                    <div className="mb-1">
-                        <label htmlFor="email">E-mail:</label>
-                        <input type="text" id="email" name="email" placeholder="Digite seu e-mail..." />
+                    <div className="inputGrande">
+                        <label htmlFor="obsLaudo">Observações:</label>
+                        <textarea 
+                        className="form-control"
+                        id="obsLaudo" 
+                        value={obsLaudo}
+                        onChange={handleInputObs}
+                        placeholder="Observações do Laudo" />
                     </div>
-                    <div className="mb-1">
-                        <label htmlFor="telefone">Telefone:</label>
-                        <input type="text" id="telefone" name="telefone" placeholder="(11) 99999-9999" />
+                    <div className="inoutGrandeData">
+                        <label htmlFor="dataLaudo">Data:</label>
+                        <input
+                        type="date"
+                        className="form-control"
+                        id="dataLaudo"
+                        value={dataLaudo}
+                        onChange={handleInputData}/>
                     </div>
-                    <div className="mb-1">
-                        <label htmlFor="cep">CEP:</label>
-                        <input type="text" id="cep" name="cep" placeholder="00000-000" maxLength="8" />
-                    </div>
-                    <div className="mb-1">
-                        <label htmlFor="logradouro">Logradouro:</label>
-                        <input type="text" id="logradouro" name="logradouro" disabled />
-                    </div>
-                    <div className="mb-1">
-                        <label htmlFor="numero">Número:</label>
-                        <input type="text" id="numero" name="numero" placeholder="" />
-                    </div>
-                    <div className="mb-1">
-                        <label htmlFor="complemento">Complemento:</label>
-                        <input type="text" id="complemento" name="complemento" placeholder="" />
-                    </div>
-                    <div className="mb-1">
-                        <label htmlFor="bairro">Bairro:</label>
-                        <input type="text" id="bairro" name="bairro" disabled />
-                    </div>
-                    <div className="mb-1">
-                        <label htmlFor="cidade">Cidade:</label>
-                        <input type="text" id="cidade" name="cidade" disabled />
-                    </div>
-                    <div className="mb-1">
-                        <label htmlFor="estado">Estado:</label>
-                        <input type="text" id="estado" name="estado" disabled />
-                    </div>
-                    <input type="button" value="Clique aqui..." className="btn btn-primary" id="botao" onClick={handleClick} />
-                </form>
-                <div className="m-2 p-1 text-center" id="saida-de-dados"></div>
-            </div>
+                    <button type="submit" onClick={salvarLaudo} className="btn btn-primary mt-4">Salvar</button>
+                </div>
+            </form>
         </div>
     );
 }

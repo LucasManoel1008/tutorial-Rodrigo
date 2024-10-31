@@ -1,0 +1,21 @@
+
+.laudoContainer{
+    width: 720px;
+    height: 700px;
+    margin: 0 auto;
+    padding: 20px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    text-align: left;
+}
+.gridItens {
+    display: grid;
+   grid-template-columns: 1fr 1fr;
+    gap: 10px;
+
+}
+.gridItens input{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
